@@ -10,6 +10,9 @@ var Site = map[string]download.Download{
 	"v.douyin.com":      &tiktok{},
 	"v.douyu.com":       &douyuTV{},
 	"vmobile.douyu.com": &douyuTV{},
+	"www.ixigua.com":    &toutiao{},
+	"www.365yg.com":     &toutiao{},
+	"m.toutiaoimg.cn":   &toutiao{},
 }
 
 func Match(url string) (download.Download, error) {
