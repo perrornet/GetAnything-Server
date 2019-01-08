@@ -8,6 +8,7 @@ import (
 
 var Site = map[string]download.Download{
 	"v.douyin.com": &tiktok{},
+	"v.douyu.com":  &douyuTV{},
 }
 
 func Match(url string) (download.Download, error) {
