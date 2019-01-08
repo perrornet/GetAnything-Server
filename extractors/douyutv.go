@@ -29,12 +29,13 @@ func (d *douyuTV) GetFileFormUrl(url string) (string, error) {
 	if !strings.Contains(url, "show/") {
 		return "", error2.UrlError
 	}
+	url = strings.Replace(url, "vmobile.douyu.com", "v.douyu.com", 1)
 	t := strings.Split(url, "/")
 	if len(t) < 5 {
 		return "", error2.UrlError
 	}
 	vId := strings.Split(t[4], "?")[0]
-	client := download.NewHttp(nil, true)
+	client := download.NewHttp(douyuHeaders, true)
 	resp, err := client.Get(url, nil)
 	if err != nil {
 		return "", err
