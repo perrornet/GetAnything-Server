@@ -2,7 +2,7 @@ package extractors
 
 import (
 	"GetAnything-Server/download"
-	"errors"
+	error2 "GetAnything-Server/error"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -31,7 +31,7 @@ func (d *tiktok) GetFileFormUrl(url string) (string, error) {
 			return strings.Split(t, `"`)[1], nil
 		}
 	}
-	return "", errors.New("Not found video download url")
+	return "", error2.NotFoundHandlerError
 }
 func (d *tiktok) GetFileInfo() *download.Info {
 	for _, c := range tiktokTitle.FindAllString(d.content, 1) {
