@@ -4,11 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func routers(root string)*gin.Engine{
+func routers() *gin.Engine {
 	router := gin.Default()
-	router.Static("/static", root)
-	router.GET("/GetVideoUrl", func(c *gin.Context) {
-		
-	})
+	//router.Static("/static", root)
+	router.POST("/GetVideoUrl", GetVideoUrl)
 	return router
 }

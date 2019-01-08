@@ -10,12 +10,10 @@ import (
 	"time"
 )
 
-func StartServer(host, port string){
-
-
+func StartServer(host, port string) {
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("%s:%s", host, port),
-		Handler: routers("./"),
+		Handler: routers(),
 	}
 
 	go func() {
