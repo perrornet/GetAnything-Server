@@ -40,11 +40,9 @@ func (h *Http) request(method, url string, body io.Reader) (*http.Request, error
 	if err != nil {
 		return nil, err
 	}
-	had := &http.Header{}
 	for k, v := range h.headers {
-		had.Add(k, v)
+		req.Header.Add(k, v)
 	}
-	req.Header = *had
 	for _, v := range h.cookie {
 		req.AddCookie(v)
 	}
