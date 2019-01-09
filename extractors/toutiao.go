@@ -17,9 +17,9 @@ import (
 )
 
 var (
-	ixiguaHeaders = map[string]string{"user-agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"}
-	ixiguaVid     = regexp.MustCompile(`videoId\s*:\s*'([^']+)'`)
-	ixiguaTitle   = regexp.MustCompile(`title: '(\S+)',`)
+	toutiaoHeaders = map[string]string{"user-agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"}
+	toutiaoVid     = regexp.MustCompile(`videoId\s*:\s*'([^']+)'`)
+	toutiaoTitle   = regexp.MustCompile(`title: '(\S+)',`)
 )
 
 type toutiao struct {
@@ -79,7 +79,7 @@ func (t *toutiao) GetUrlFromvid(vid string) (string, error) {
 
 // https://www.ixigua.com/
 func (t *toutiao) ixigua(url string) (string, error) {
-	t.client = download.NewHttp(ixiguaHeaders)
+	t.client = download.NewHttp(toutiaoHeaders)
 	resp, err := t.client.Get(url, nil)
 	if err != nil {
 		return "", err
@@ -87,7 +87,7 @@ func (t *toutiao) ixigua(url string) (string, error) {
 	c, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	t.content = string(c)
-	vids := ixiguaVid.FindAllString(t.content, 1)
+	vids := toutiaoVid.FindAllString(t.content, 1)
 	if len(vids) == 0 {
 		return "", error2.UrlError
 	}
@@ -106,4 +106,13 @@ func (t *toutiao) GetFileFormUrl(url string) (string, error) {
 	return t.GetUrlFromvid(vid)
 }
 
-func (d *toutiao) GetFileInfo() *download.Info { return &download.Info{} }
+func (t *toutiao) GetFileInfo() *download.Info {
+	c := toutiaoTitle.FindAllString(t.content, 1)
+	for _, i := range c {
+		if i != "" {
+			i = strings.Replace(i, "title: '", "", 1)
+			return &download.Info{Title: strings.Replace(i, "',", "", 1)}
+		}
+	}
+	return nil
+}
