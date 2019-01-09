@@ -6,22 +6,31 @@ import (
 	url2 "net/url"
 )
 
-var Site = map[string]download.Download{
-	"v.douyin.com":      &tiktok{},
-	"v.douyu.com":       &douyuTV{},
-	"vmobile.douyu.com": &douyuTV{},
-	"www.ixigua.com":    &toutiao{},
-	"www.365yg.com":     &toutiao{},
-	"m.toutiaoimg.cn":   &toutiao{},
+func newDownload(host string) download.Download {
+	switch host {
+	case "v.douyin.com":
+		return &tiktok{}
+	case "v.douyu.com", "vmobile.douyu.com":
+		return &douyuTV{}
+	case "www.ixigua.com", "www.365yg.com", "m.toutiaoimg.cn":
+		return &toutiao{}
+	case "weibo.com", "m.weibo.cn":
+		return &weibo{}
+	default:
+		return nil
+	}
 }
 
 func Match(url string) (download.Download, error) {
 	u, err := url2.Parse(url)
 	if err != nil {
-		return nil, error2.UrlError
+		return nil, err
 	}
-	if v, ok := Site[u.Host]; ok {
-		return v, nil
+	if d := newDownload(u.Host); d != nil {
+		if err := d.Init(url); err != nil {
+			return nil, err
+		}
+		return d, nil
 	}
 	return nil, error2.NotFoundHandlerError
 }

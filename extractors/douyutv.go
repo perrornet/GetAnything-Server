@@ -2,7 +2,6 @@ package extractors
 
 import (
 	"GetAnything-Server/download"
-	error2 "GetAnything-Server/error"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -12,6 +11,7 @@ import (
 
 type douyuTV struct {
 	content string
+	url     string
 }
 
 var (
@@ -25,55 +25,59 @@ type douyuResp struct {
 	Data  interface{} `json:"data"`
 }
 
-func (d *douyuTV) GetFileFormUrl(url string) (string, error) {
-	if !strings.Contains(url, "show/") {
-		return "", error2.UrlError
+func (d *douyuTV) Init(url string) error {
+	d.url = url
+	return nil
+}
+
+func (d *douyuTV) GetDownloadHeaders() map[string]string { return nil }
+
+func (d *douyuTV) GetFileInfo() ([]download.Info, error) {
+	data := make([]download.Info, 0)
+	if !strings.Contains(d.url, "show/") {
+		return data, errors.New("未能提供正确的UR，URL中必须包含'show/'")
 	}
-	url = strings.Replace(url, "vmobile.douyu.com", "v.douyu.com", 1)
-	t := strings.Split(url, "/")
+	d.url = strings.Replace(d.url, "vmobile.douyu.com", "v.douyu.com", 1)
+	t := strings.Split(d.url, "/")
 	if len(t) < 5 {
-		return "", error2.UrlError
+		return data, errors.New("未能提供正确的URL，示例UR:" +
+			"https://vmobile.douyu.com/show/8pa9v5pL91KWVrqA?source=qq&medium=and&type=vd")
 	}
 	vId := strings.Split(t[4], "?")[0]
 	client := download.NewHttp(douyuHeaders, true)
-	resp, err := client.Get(url, nil)
+	resp, err := client.Get(d.url, nil)
 	if err != nil {
-		return "", err
+		return data, err
 	}
 	c, _ := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
 	d.content = string(c)
 	resp, err = client.Get(douyuVideoInfoUrl+vId, nil)
 	if err != nil {
-		return "", err
+		return data, err
 	}
 	defer resp.Body.Close()
-	data := &douyuResp{}
+	respData := &douyuResp{}
 	c, _ = ioutil.ReadAll(resp.Body)
-	if err := json.Unmarshal(c, data); err != nil {
-		return "", err
+	if err := json.Unmarshal(c, respData); err != nil {
+		return data, err
 	}
-	if data.Error != 0 {
-		return "", errors.New(data.Data.(string))
+	if respData.Error != 0 {
+		return data, errors.New(respData.Data.(string))
 	}
-	if v, ok := data.Data.(map[string]interface{}); ok {
+	var downloadUrl string
+	if v, ok := respData.Data.(map[string]interface{}); ok {
 		if v1, ok := v["video_url"]; ok {
-			return v1.(string), nil
+			downloadUrl = v1.(string)
+		} else {
+			return data, errors.New("请求斗鱼视频信息获取失败，data.data中没有'video_url'键")
 		}
-		return "", errors.New("请求斗鱼视频信息获取失败，data.data中没有'video_url'键")
-	}
-	return "", errors.New("斗鱼获取视频信息接口类型变化")
-}
-
-func (d *douyuTV) GetFileInfo() *download.Info {
-	if d.content == "" {
-		return nil
 	}
 	titles := douyuTitle.FindAllString(d.content, 1)
 	for _, t := range titles {
 		t = strings.Replace(t, "<h1>", "", 1)
-		t = strings.Replace(t, "</h1>", "", 1)
-		return &download.Info{Title: t, DownloadHeaders: douyuHeaders}
+		data = append(data, download.Info{Url: downloadUrl, Title: strings.Replace(t, "</h1>", "", 1)})
+		return data, nil
 	}
-	return &download.Info{DownloadHeaders: douyuHeaders}
+	return data, errors.New("斗鱼获取视频信息接口类型变化。")
 }

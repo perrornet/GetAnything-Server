@@ -2,7 +2,6 @@ package extractors
 
 import (
 	"GetAnything-Server/download"
-	error2 "GetAnything-Server/error"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -23,8 +22,9 @@ var (
 )
 
 type toutiao struct {
-	content string
 	client  *download.Http
+	url     string
+	content string
 }
 
 type toutiaoResp struct {
@@ -45,12 +45,40 @@ func signVideoUrl(vid string) string {
 	rr := rand.New(rand.NewSource(time.Now().Unix()))
 	r := strconv.FormatFloat(rr.Float64(), 'f', 10, 64)
 	r = r[2:]
-	fmt.Println(r)
 	url := "http://i.snssdk.com/video/urls/v/1/toutiao/mp4/" + vid
 	n := strings.Replace(url, "http://i.snssdk.com", "", 1) + "?r=" + r
 	c := crc32.ChecksumIEEE([]byte(n))
 	s := c >> 0
 	return url + fmt.Sprintf("?r=%s&s=%d", r, s)
+}
+
+func (t *toutiao) Init(url string) error {
+	t.url = url
+	t.client = download.NewHttp(nil)
+	return nil
+}
+
+func (t *toutiao) GetDownloadHeaders() map[string]string { return nil }
+
+func (t *toutiao) GetFileInfo() ([]download.Info, error) {
+	data := make([]download.Info, 0)
+	vid, err := t.ixigua(t.url)
+	if err != nil {
+		return data, err
+	}
+	url, err := t.GetUrlFromvid(vid)
+	if err != nil {
+		return data, err
+	}
+	c := toutiaoTitle.FindAllString(t.content, 1)
+	for _, i := range c {
+		if i != "" {
+			i = strings.Replace(i, "title: '", "", 1)
+			data = append(data, download.Info{Title: strings.Replace(i, "',", "", 1), Url: url})
+			return data, nil
+		}
+	}
+	return data, errors.New("头条系视频接口变化。")
 }
 
 func (t *toutiao) GetUrlFromvid(vid string) (string, error) {
@@ -89,30 +117,11 @@ func (t *toutiao) ixigua(url string) (string, error) {
 	t.content = string(c)
 	vids := toutiaoVid.FindAllString(t.content, 1)
 	if len(vids) == 0 {
-		return "", error2.UrlError
+		return "", errors.New("未能获取到正确的vid")
 	}
 	vids = strings.Split(vids[0], "'")
 	if len(vids) < 2 {
-		return "", error2.UrlError
+		return "", errors.New("未能匹配到正确的vid")
 	}
 	return vids[1], nil
-}
-
-func (t *toutiao) GetFileFormUrl(url string) (string, error) {
-	vid, err := t.ixigua(url)
-	if err != nil {
-		return "", err
-	}
-	return t.GetUrlFromvid(vid)
-}
-
-func (t *toutiao) GetFileInfo() *download.Info {
-	c := toutiaoTitle.FindAllString(t.content, 1)
-	for _, i := range c {
-		if i != "" {
-			i = strings.Replace(i, "title: '", "", 1)
-			return &download.Info{Title: strings.Replace(i, "',", "", 1)}
-		}
-	}
-	return nil
 }

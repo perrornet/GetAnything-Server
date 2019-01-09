@@ -2,7 +2,7 @@ package extractors
 
 import (
 	"GetAnything-Server/download"
-	error2 "GetAnything-Server/error"
+	"errors"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -10,6 +10,7 @@ import (
 
 type tiktok struct {
 	content string
+	url     string
 }
 
 var (
@@ -17,29 +18,36 @@ var (
 	tiktokVideo = regexp.MustCompile(`playAddr: "(.*?)"`)
 )
 
-func (d *tiktok) GetFileFormUrl(url string) (string, error) {
+func (d *tiktok) Init(url string) error {
+	d.url = url
+	return nil
+}
+
+func (d *tiktok) GetDownloadHeaders() map[string]string { return nil }
+
+func (d *tiktok) GetFileInfo() ([]download.Info, error) {
 	h := download.NewHttp(nil)
-	resp, err := h.Get(url, nil)
+	data := make([]download.Info, 0)
+	resp, err := h.Get(d.url, nil)
 	if err != nil {
-		return "", err
+		return data, err
 	}
 	defer resp.Body.Close()
 	c, _ := ioutil.ReadAll(resp.Body)
-	d.content = string(c)
-	for _, t := range tiktokVideo.FindAllString(d.content, 1) {
-		if t != "" {
-			return strings.Split(t, `"`)[1], nil
-		}
-	}
-	return "", error2.NotFoundHandlerError
-}
-func (d *tiktok) GetFileInfo() *download.Info {
-	for _, c := range tiktokTitle.FindAllString(d.content, 1) {
+	var title string
+	for _, c := range tiktokTitle.FindAllString(string(c), 1) {
 		if c != "" {
 			c = strings.Replace(c, `<p class="desc">`, "", 1)
-			c = strings.Replace(c, "</p>", "", 1)
-			return &download.Info{Title: c}
+			title = strings.Replace(c, "</p>", "", 1)
 		}
 	}
-	return &download.Info{}
+	for _, t := range tiktokVideo.FindAllString(d.content, 1) {
+		if t != "" {
+			data = append(data, download.Info{Url: strings.Split(t, `"`)[1], Title: title})
+			return data, nil
+		} else {
+			return data, errors.New("未能正确获取抖音视频下载URL")
+		}
+	}
+	return data, errors.New("未能正确获取抖音视频下载URL")
 }

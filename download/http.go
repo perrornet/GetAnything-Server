@@ -9,13 +9,14 @@ import (
 )
 
 type Info struct {
-	Title           string            `json:"title"`
-	DownloadHeaders map[string]string `json:"download_headers"`
+	Url   string `json:"url"`
+	Title string `json:"title"`
 }
 
 type Download interface {
-	GetFileFormUrl(url string) (string, error)
-	GetFileInfo() *Info
+	Init(url string) error
+	GetDownloadHeaders() map[string]string
+	GetFileInfo() ([]Info, error)
 }
 
 type Http struct { // only request api, download video use tcp
