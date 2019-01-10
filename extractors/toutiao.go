@@ -66,7 +66,7 @@ func (t *toutiao) GetFileInfo() ([]download.Info, error) {
 	if err != nil {
 		return data, err
 	}
-	url, err := t.GetUrlFromvid(vid)
+	url, err := t.GetUrlFromVid(vid)
 	if err != nil {
 		return data, err
 	}
@@ -81,7 +81,7 @@ func (t *toutiao) GetFileInfo() ([]download.Info, error) {
 	return data, errors.New("头条系视频接口变化。")
 }
 
-func (t *toutiao) GetUrlFromvid(vid string) (string, error) {
+func (t *toutiao) GetUrlFromVid(vid string) (string, error) {
 	url := signVideoUrl(vid)
 	fmt.Println(url)
 	resp, err := t.client.Get(url, nil)
