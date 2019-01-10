@@ -14,6 +14,8 @@
 | **西瓜视频** | <https://www.ixigua.com/>        |✓|
 | **阳光宽频网**          | <http://www.365yg.com/>              |✓|
 | **斗鱼**        | <http://www.douyutv.com/>            |✓|
+| **美拍**        | <https://www.meipai.com/>            |✓|
+| **微博**        | <https://weibo.com/>            |✓|
 
 ## Release History
 

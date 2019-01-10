@@ -16,6 +16,8 @@ func newDownload(host string) download.Download {
 		return &toutiao{}
 	case "weibo.com", "m.weibo.cn":
 		return &weibo{}
+	case "www.meipai.com":
+		return &meipai{}
 	default:
 		return nil
 	}
