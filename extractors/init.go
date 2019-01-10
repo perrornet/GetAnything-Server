@@ -20,6 +20,8 @@ func newDownload(host string) download.Download {
 		return &meipai{}
 	case "krcom.cn":
 		return &krcom{}
+	case "m.gifshow.com", "live.kuaishou.com", "www.gifshow.com":
+		return &kuaishou{}
 	default:
 		return nil
 	}
