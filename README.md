@@ -16,6 +16,7 @@
 | **斗鱼**        | <http://www.douyutv.com/>            |✓|
 | **美拍**        | <https://www.meipai.com/>            |✓|
 | **微博**        | <https://weibo.com/>            |✓|
+| **酷燃网**        | <https://krcom.cn/>            |✓|
 
 ## Release History
 
