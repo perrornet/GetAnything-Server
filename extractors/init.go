@@ -22,6 +22,8 @@ func newDownload(host string) download.Download {
 		return &krcom{}
 	case "m.gifshow.com", "live.kuaishou.com", "www.gifshow.com": // example url:http://www.gifshow.com/s/4wl4pk3y
 		return &kuaishou{}
+	case "n.miaopai.com": // example url:http://n.miaopai.com/media/pU-xTQ-A2keFNWqqwC3CVUwFjoywScpn.htm
+		return &miaopai{}
 	default:
 		return nil
 	}
