@@ -14,8 +14,9 @@ type tiktok struct {
 }
 
 var (
-	tiktokTitle = regexp.MustCompile(`<p class="desc">(.*?)</p>`)
-	tiktokVideo = regexp.MustCompile(`playAddr: "(.*?)"`)
+	tiktokTitle   = regexp.MustCompile(`<p class="desc">(.*?)</p>`)
+	tiktokVideo   = regexp.MustCompile(`playAddr: "(.*?)"`)
+	tiktokHeaders = map[string]string{"user-agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"}
 )
 
 func (d *tiktok) Init(url string) error {
@@ -26,7 +27,7 @@ func (d *tiktok) Init(url string) error {
 func (d *tiktok) GetDownloadHeaders() map[string]string { return nil }
 
 func (d *tiktok) GetFileInfo() ([]download.Info, error) {
-	h := download.NewHttp(nil)
+	h := download.NewHttp(tiktokHeaders)
 	data := make([]download.Info, 0)
 	resp, err := h.Get(d.url, nil)
 	if err != nil {
@@ -34,8 +35,9 @@ func (d *tiktok) GetFileInfo() ([]download.Info, error) {
 	}
 	defer resp.Body.Close()
 	c, _ := ioutil.ReadAll(resp.Body)
+	d.content = string(c)
 	var title string
-	for _, c := range tiktokTitle.FindAllString(string(c), 1) {
+	for _, c := range tiktokTitle.FindAllString(d.content, 1) {
 		if c != "" {
 			c = strings.Replace(c, `<p class="desc">`, "", 1)
 			title = strings.Replace(c, "</p>", "", 1)
@@ -45,8 +47,6 @@ func (d *tiktok) GetFileInfo() ([]download.Info, error) {
 		if t != "" {
 			data = append(data, download.Info{Url: strings.Split(t, `"`)[1], Title: title})
 			return data, nil
-		} else {
-			return data, errors.New("未能正确获取抖音视频下载URL")
 		}
 	}
 	return data, errors.New("未能正确获取抖音视频下载URL")

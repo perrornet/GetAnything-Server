@@ -36,14 +36,21 @@ func NewHttp(headers map[string]string, isSession ...bool) *Http {
 	return &Http{client: client, isSession: true, headers: headers, cookie: map[string]*http.Cookie{}}
 }
 
-func (h *Http) request(method, url string, body io.Reader) (*http.Request, error) {
+func (h *Http) request(method, url string, body io.Reader, headers map[string]string) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
-	for k, v := range h.headers {
-		req.Header.Add(k, v)
+	if headers != nil {
+		for k, v := range headers {
+			req.Header.Add(k, v)
+		}
+	} else if h.headers != nil {
+		for k, v := range h.headers {
+			req.Header.Add(k, v)
+		}
 	}
+
 	for _, v := range h.cookie {
 		req.AddCookie(v)
 	}
@@ -51,13 +58,10 @@ func (h *Http) request(method, url string, body io.Reader) (*http.Request, error
 }
 
 func (h *Http) do(method, url string, headers map[string]string, body io.Reader) (*http.Response, error) {
-	if headers != nil {
-		h.headers = headers
-	}
 	if url == "" {
 		return nil, errors.New("url is empty")
 	}
-	req, err := h.request(method, url, body)
+	req, err := h.request(method, url, body, headers)
 	if req == nil {
 		return nil, err
 	}
