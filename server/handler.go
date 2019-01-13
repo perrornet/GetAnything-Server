@@ -1,10 +1,10 @@
 package server
 
 import (
-	"GetAnything-Server/download"
-	error2 "GetAnything-Server/error"
-	"GetAnything-Server/extractors"
 	"fmt"
+	"github.com/PerrorOne/GetAnything-Server/download"
+	error2 "github.com/PerrorOne/GetAnything-Server/error"
+	"github.com/PerrorOne/GetAnything-Server/extractors"
 	"github.com/apsdehal/go-logger"
 	"github.com/gin-gonic/gin"
 )
