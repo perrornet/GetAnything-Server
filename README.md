@@ -19,6 +19,7 @@
 | **酷燃网**        | <https://krcom.cn/>            |✓|
 | **快手**        | <https://www.kuaishou.com/>            |✓|
 | **秒拍**        | <http://www.miaopai.com/>            |✓|
+| **知乎**        | <https://www.zhihu.com/>            |✓|
 
 ## Release History
 

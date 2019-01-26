@@ -78,7 +78,6 @@ func (h *Http) do(method, url string, headers map[string]string, body io.Reader)
 }
 
 // if headers != nil, cover Http.headers
-// if error return nil
 func (h *Http) Get(url string, headers map[string]string) (*http.Response, error) {
 	return h.do("GET", url, headers, nil)
 }

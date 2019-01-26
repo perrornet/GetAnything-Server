@@ -7,6 +7,7 @@ import (
 	"github.com/PerrorOne/GetAnything-Server/extractors"
 	"github.com/apsdehal/go-logger"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 )
 
 type Data struct {
@@ -30,7 +31,9 @@ func GetVideoUrl(ctx *gin.Context) {
 	if url == "" {
 		resp := &Response{Code: 1, Msg: error2.ClientError.Error()}
 		ctx.JSON(400, resp)
-		log.Error("参数错误")
+		c, _ := ioutil.ReadAll(ctx.Request.Body)
+		log.Info(string(c))
+		log.Error(fmt.Sprintf("参数错误: %v|%s", ctx.Request.PostForm, ctx.Request.Body, string(c)))
 		return
 	}
 	log.Info(url)
