@@ -26,6 +26,8 @@ func newDownload(host string) download.Download {
 		return &miaopai{}
 	case "www.zhihu.com": // example url:https://www.zhihu.com/question/282693696/answer/538355040
 		return &zhihu{}
+	case "www.bilibili.com":
+		return &bilibili{}
 	default:
 		return nil
 	}

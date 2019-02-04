@@ -11,6 +11,7 @@ import (
 type Info struct {
 	Url   string `json:"url"`
 	Title string `json:"title"`
+	Type  string `json:"type"`
 }
 
 type Download interface {

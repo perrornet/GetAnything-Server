@@ -20,6 +20,7 @@
 | **快手**        | <https://www.kuaishou.com/>            |✓|
 | **秒拍**        | <http://www.miaopai.com/>            |✓|
 | **知乎**        | <https://www.zhihu.com/>            |✓|
+| **bilibili**        | <https://www.bilibili.com/>            |✓|
 
 ## Release History
 
