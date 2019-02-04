@@ -17,24 +17,6 @@ var (
 	bilibiliTitle = regexp.MustCompile(`"title":"(.*?)",`)
 )
 
-type bilibiliDurl struct {
-	Url string `xml:"url"`
-}
-
-type bilibiliXml1 struct {
-	Durl bilibiliDurl `xml:"durl"`
-}
-
-type bilibiliResponse struct {
-	Video struct {
-		Durl struct {
-			Url struct {
-				U string `xml:",cdata"`
-			} `xml:"url"`
-		} `xml:"durl"`
-	} `xml:"video"`
-}
-
 type bilibili struct {
 	url     *url2.URL
 	client  *download.Http
