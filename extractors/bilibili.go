@@ -57,26 +57,27 @@ func (b *bilibili) GetFileInfo() ([]download.Info, error) {
 		}
 		cid := strings.Replace(string(cids[0]), `","cid":`, "", 1)
 		cid = strings.Replace(cid, `,`, "", 1)
-		params := fmt.Sprintf("appkey=84956560bc028eb7&cid=%s&otype=xml&qn=%d&quality=%d&type=", cid, 15, 15)
-		url := b.ApiUrl + params + "&sign=" + utils.NewMd5(params+b.SEC1).Encrypt()
-		resp, err = b.client.Get(url, nil)
-		if err != nil {
-			return nil, err
+		data1 := []int{116, 112, 80, 74, 64, 32, 16, 15}
+		for _, v := range data1 { // 只选择最高清晰度
+			params := fmt.Sprintf("appkey=84956560bc028eb7&cid=%s&otype=xml&qn=%d&quality=%d&type=", cid, v, v)
+			url := b.ApiUrl + params + "&sign=" + utils.NewMd5(params+b.SEC1).Encrypt()
+			fmt.Println(url)
+			resp, err = b.client.Get(url, nil)
+			if err != nil {
+				return nil, err
+			}
+			c, _ = ioutil.ReadAll(resp.Body)
+			urls := bilibiliUrl.FindAll(c, 1)
+			if len(urls) == 0 {
+				continue
+			}
+			downloadUrl := strings.Replace(string(urls[0]), `<url><![CDATA[`, "", 1)
+			downloadUrl = strings.Replace(downloadUrl, `]]`, "", 1)
+			data := make([]download.Info, 0)
+			data = append(data, download.Info{Title: title, Url: downloadUrl, Type: "flv"})
+			return data, nil
 		}
-		c, _ = ioutil.ReadAll(resp.Body)
-		urls := bilibiliUrl.FindAll(c, 1)
-		if len(urls) == 0 {
-			return nil, errors.New("未能找到相关的视频下载URL")
-		}
-		downloadUrl := strings.Replace(string(urls[0]), `<url><![CDATA[`, "", 1)
-		downloadUrl = strings.Replace(downloadUrl, `]]`, "", 1)
-		data := make([]download.Info, 0)
-		data = append(data, download.Info{Title: title, Url: downloadUrl, Type: "flv"})
-		return data, nil
+		return nil, errors.New("未能找到相关的视频下载URL")
 	}
 	return nil, nil
-	//chksum = hashlib.md5(bytes(params_str+self.SEC1, 'utf8')).hexdigest()
-	//api_url = self.api_url + params_str + '&sign=' + chksum
-	// http://interface.bilibili.com/v2/playurl?appkey=84956560bc028eb7&cid=74472811&otype=xml&qn=15&quality=15&type=&sign=a6ff389a7c169890d531d060f88b2eb8
-	// http://bangumi.bilibili.com/player/web_api/playurl?appkey=84956560bc028eb7&cid=74472811&otype=xml&qn=15&quality=15&type=&sign=a6ff389a7c169890d531d060f88b2eb8
 }
