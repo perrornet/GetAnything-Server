@@ -24,7 +24,7 @@ func newDownload(host string) download.Download {
 		return &kuaishou{}
 	case "n.miaopai.com": // example url:http://n.miaopai.com/media/pU-xTQ-A2keFNWqqwC3CVUwFjoywScpn.htm
 		return &miaopai{}
-	case "www.zhihu.com": // example url:https://www.zhihu.com/question/282693696/answer/538355040
+	case "www.zhihu.com", "zhuanlan.zhihu.com": // example url:https://www.zhihu.com/question/282693696/answer/538355040
 		return &zhihu{}
 	case "www.bilibili.com":
 		return &bilibili{}
