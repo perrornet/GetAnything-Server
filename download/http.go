@@ -83,6 +83,10 @@ func (h *Http) Get(url string, headers map[string]string) (*http.Response, error
 	return h.do("GET", url, headers, nil)
 }
 
+func (h *Http) Head(url string, headers map[string]string) (*http.Response, error) {
+	return h.do("HEAD", url, headers, nil)
+}
+
 func (h *Http) Post(url string, headers map[string]string, body io.Reader) (*http.Response, error) {
 	return h.do("POST", url, headers, body)
 }
