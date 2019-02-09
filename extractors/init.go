@@ -12,7 +12,7 @@ func newDownload(host string) download.Download {
 		return &tiktok{}
 	case "v.douyu.com", "vmobile.douyu.com": // example url:https://v.douyu.com/show/NbwE7ZBr8rB7n5Zz
 		return &douyuTV{}
-	case "www.ixigua.com", "www.365yg.com", "m.toutiaoimg.cn": // example url:http://www.365yg.com/a6642859345774117383/#mid=1616102707166216
+	case "www.ixigua.com", "www.365yg.com", "m.toutiaoimg.cn", "m.365yg.com": // example url:http://www.365yg.com/a6642859345774117383/#mid=1616102707166216
 		return &toutiao{}
 	case "weibo.com", "m.weibo.cn": // example url:https://weibo.com/1739046981/HbbxNh0PO?type=comment
 		return &weibo{}
