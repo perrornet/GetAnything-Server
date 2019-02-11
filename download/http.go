@@ -8,15 +8,26 @@ import (
 	"time"
 )
 
+// 文件的信息
 type Info struct {
-	Url   string `json:"url"`
+	// 文件下载的url
+	// m3u8类型详见douyutv.go
+	Url string `json:"url"`
+	// 文件的标题， 文件将以标题命名
 	Title string `json:"title"`
-	Type  string `json:"type"`
+
+	// 该文件的类型,常规类型下文件将以该参数为后缀, m3u8类型文件标明m3u8
+	// 如:mp4, flv, mov...
+
+	Type string `json:"type"`
 }
 
 type Download interface {
+	// 最先调用此方法， 该方法建议只初始化一些参数
 	Init(url string) error
+	// 获取下载文件时所需的headers, 如果没有返回nil
 	GetDownloadHeaders() map[string]string
+	// 获取文件的下载url
 	GetFileInfo() ([]Info, error)
 }
 

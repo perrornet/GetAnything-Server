@@ -6,6 +6,8 @@ import (
 	url2 "net/url"
 )
 
+// m3u8格式视频返回格式需要将.ts文件的下载url按照顺序放入[]download.Info
+// 并在type中表明m3u8
 func newDownload(host string) download.Download {
 	switch host {
 	case "v.douyin.com", "www.iesdouyin.com": // example url:http://v.douyin.com/Nxsx71/
