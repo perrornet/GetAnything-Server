@@ -7,8 +7,12 @@ import (
 	"github.com/PerrorOne/GetAnything-Server/extractors"
 	"github.com/apsdehal/go-logger"
 	"github.com/gin-gonic/gin"
+	"github.com/patrickmn/go-cache"
 	"io/ioutil"
+	"time"
 )
+
+var Cache = cache.New(5*time.Minute, 10*time.Minute)
 
 type Data struct {
 	Headers map[string]string `json:"headers"`
@@ -28,6 +32,12 @@ func GetVideoUrl(ctx *gin.Context) {
 	l, _ := ctx.Get("log")
 	log := l.(*logger.Logger)
 	url := ctx.PostForm("url")
+	if v, ok := Cache.Get(url); ok {
+		resp := &Response{Code: 0, Data: v.(Data)}
+		ctx.JSON(200, resp)
+		log.Info(fmt.Sprintf("return Data from cahce key:%s", url))
+		return
+	}
 	if url == "" {
 		resp := &Response{Code: 1, Msg: error2.ClientError.Error()}
 		ctx.JSON(400, resp)
@@ -53,6 +63,7 @@ func GetVideoUrl(ctx *gin.Context) {
 		return
 	}
 	resp := &Response{Code: 0, Data: Data{Headers: d.GetDownloadHeaders(), Info: info}}
+	Cache.SetDefault(url, resp.Data)
 	ctx.JSON(200, resp)
 	log.Info(resp.String())
 	return

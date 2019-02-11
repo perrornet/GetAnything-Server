@@ -29,5 +29,8 @@ func routers() *gin.Engine {
 		ctx.Next()
 	})
 	router.POST("/GetVideoUrl", GetVideoUrl)
+	router.NoRoute(func(ctx *gin.Context) {
+		ctx.String(200, "ok")
+	})
 	return router
 }
