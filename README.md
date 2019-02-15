@@ -29,6 +29,7 @@
 | **想看新闻**        | <https://open.xk.miui.com/>            |✓|
 | **搜狐视频**        | <https://tv.sohu.com/>            |✓|
 | **人人视频**        | <https://android.myapp.com/myapp/detail.htm?apkName=com.zhongduomei.rrmj.society&ADTAG=mobile>            |✓|
+| **全民小视频**        | <http://quanmin.baidu.com/>            |✓|
 
 ## Release History
 

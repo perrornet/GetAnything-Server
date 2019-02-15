@@ -46,6 +46,8 @@ func newDownload(host string) download.Download {
 		return &sohu{}
 	case "mobile.rr.tv":
 		return &rrVideo{}
+	case "quanmin.hao222.com":
+		return &quanmingVideo{}
 	default:
 		return nil
 	}
