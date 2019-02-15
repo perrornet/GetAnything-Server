@@ -42,6 +42,8 @@ func newDownload(host string) download.Download {
 		return &weishi{}
 	case "v.huya.com":
 		return &huya{}
+	case "m.tv.sohu.com", "tv.sohu.com":
+		return &sohu{}
 	default:
 		return nil
 	}

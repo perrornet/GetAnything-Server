@@ -27,6 +27,7 @@
 | **好看视频**        | <https://haokan.baidu.com/>            |✓|
 | **百度视频**        | <http://m.v.baidu.com/>            |✓|
 | **想看新闻**        | <https://open.xk.miui.com/>            |✓|
+| **搜狐视频**        | <https://tv.sohu.com/>            |✓|
 
 ## Release History
 
