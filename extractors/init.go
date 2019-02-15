@@ -10,26 +10,28 @@ import (
 // 并在type中表明m3u8
 func newDownload(host string) download.Download {
 	switch host {
-	case "v.douyin.com", "www.iesdouyin.com": // example url:http://v.douyin.com/Nxsx71/
+	case "v.douyin.com", "www.iesdouyin.com":
 		return &tiktok{}
-	case "v.douyu.com", "vmobile.douyu.com": // example url:https://v.douyu.com/show/NbwE7ZBr8rB7n5Zz
+	case "v.douyu.com", "vmobile.douyu.com":
 		return &douyuTV{}
-	case "www.ixigua.com", "www.365yg.com", "m.toutiaoimg.cn", "m.365yg.com": // example url:http://www.365yg.com/a6642859345774117383/#mid=1616102707166216
+	case "www.ixigua.com", "www.365yg.com", "m.toutiaoimg.cn", "m.365yg.com":
 		return &toutiao{}
-	case "weibo.com", "m.weibo.cn": // example url:https://weibo.com/1739046981/HbbxNh0PO?type=comment
+	case "weibo.com", "m.weibo.cn":
 		return &weibo{}
-	case "www.meipai.com": // example url:https://www.meipai.com/media/1051281695
+	case "www.meipai.com":
 		return &meipai{}
-	case "krcom.cn": // example url:https://krcom.cn/6441132677/episodes/2358773:4326651149133458
+	case "krcom.cn":
 		return &krcom{}
-	case "m.gifshow.com", "live.kuaishou.com", "www.gifshow.com": // example url:http://www.gifshow.com/s/4wl4pk3y
+	case "m.gifshow.com", "live.kuaishou.com", "www.gifshow.com":
 		return &kuaishou{}
-	case "n.miaopai.com": // example url:http://n.miaopai.com/media/pU-xTQ-A2keFNWqqwC3CVUwFjoywScpn.htm
+	case "n.miaopai.com":
 		return &miaopai{}
-	case "www.zhihu.com", "zhuanlan.zhihu.com": // example url:https://www.zhihu.com/question/282693696/answer/538355040
+	case "www.zhihu.com", "zhuanlan.zhihu.com":
 		return &zhihu{}
 	case "www.bilibili.com":
 		return &bilibili{}
+	case "h5.weishi.qq.com":
+		return &weishi{}
 	default:
 		return nil
 	}

@@ -21,6 +21,7 @@
 | **秒拍**        | <http://www.miaopai.com/>            |✓|
 | **知乎**        | <https://www.zhihu.com/>            |✓|
 | **bilibili**        | <https://www.bilibili.com/>            |✓|
+| **微视**        | <https://weishi.qq.com//>            |✓|
 
 ## Release History
 

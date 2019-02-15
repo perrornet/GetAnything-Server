@@ -3,8 +3,10 @@ package download
 import (
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -29,6 +31,20 @@ type Download interface {
 	GetDownloadHeaders() map[string]string
 	// 获取文件的下载url
 	GetFileInfo() ([]Info, error)
+}
+
+// 生成post所需的body数据
+func postData(body map[string]string) io.Reader {
+	if body == nil {
+		return nil
+	}
+	data := make([]string, len(body), len(body))
+	var index int
+	for k, v := range body {
+		data[index] = fmt.Sprintf("%s=%s", k, v)
+		index++
+	}
+	return strings.NewReader(strings.Join(data, "&"))
 }
 
 type Http struct { // only request api, download video use tcp
@@ -69,11 +85,14 @@ func (h *Http) request(method, url string, body io.Reader, headers map[string]st
 	return req, nil
 }
 
-func (h *Http) do(method, url string, headers map[string]string, body io.Reader) (*http.Response, error) {
+func (h *Http) do(method, url string, headers map[string]string, data map[string]string) (*http.Response, error) {
 	if url == "" {
 		return nil, errors.New("url is empty")
 	}
-	req, err := h.request(method, url, body, headers)
+	req, err := h.request(method, url, postData(data), headers)
+	if data != nil {
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	}
 	if req == nil {
 		return nil, err
 	}
@@ -98,6 +117,6 @@ func (h *Http) Head(url string, headers map[string]string) (*http.Response, erro
 	return h.do("HEAD", url, headers, nil)
 }
 
-func (h *Http) Post(url string, headers map[string]string, body io.Reader) (*http.Response, error) {
-	return h.do("POST", url, headers, body)
+func (h *Http) Post(url string, headers map[string]string, data map[string]string) (*http.Response, error) {
+	return h.do("POST", url, headers, data)
 }
