@@ -31,6 +31,7 @@
 | **人人视频**        | <https://android.myapp.com/myapp/detail.htm?apkName=com.zhongduomei.rrmj.society&ADTAG=mobile>            |✓|
 | **全民小视频**        | <http://quanmin.baidu.com/>            |✓|
 | **一点资讯**        | <https://www.yidianzixun.com/>            |✓|
+| **小米视频**        | <http://www.appchina.com/app/com.miui.video?from=spi-desc>            |✓|
 
 ## Release History
 

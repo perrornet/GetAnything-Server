@@ -50,6 +50,8 @@ func newDownload(host string) download.Download {
 		return &quanmingVideo{}
 	case "www.yidianzixun.com":
 		return &yidianzixun{}
+	case "m.video.xiaomi.com", "img.cdn.mvideo.xiaomi.com":
+		return &xiaomiVideo{}
 	default:
 		return nil
 	}
