@@ -30,6 +30,7 @@
 | **搜狐视频**        | <https://tv.sohu.com/>            |✓|
 | **人人视频**        | <https://android.myapp.com/myapp/detail.htm?apkName=com.zhongduomei.rrmj.society&ADTAG=mobile>            |✓|
 | **全民小视频**        | <http://quanmin.baidu.com/>            |✓|
+| **一点资讯**        | <https://www.yidianzixun.com/>            |✓|
 
 ## Release History
 
