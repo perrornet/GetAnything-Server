@@ -54,6 +54,8 @@ func newDownload(host string) download.Download {
 		return &xiaomiVideo{}
 	case "kg.qq.com", "node.kg.qq.com":
 		return &kgqq{}
+	case "h.huajiao.com":
+		return &huajiao{}
 	default:
 		return nil
 	}

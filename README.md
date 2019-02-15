@@ -33,6 +33,7 @@
 | **一点资讯**        | <https://www.yidianzixun.com/>            |✓| |
 | **小米视频**        | <http://www.appchina.com/app/com.miui.video?from=spi-desc>            |✓| |
 | **全民K歌**        | <https://kg.qq.com/>            |✓|✓|
+| **花椒直播**        | <http://www.huajiao.com/>            |✓| |
 
 ## Release History
 
