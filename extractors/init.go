@@ -34,6 +34,8 @@ func newDownload(host string) download.Download {
 		return &panocn{}
 	case "haokan.baidu.com":
 		return &haokan{}
+	case "feed.browser.miui.com":
+		return &feedBrowserMiui{}
 	case "m.v.baidu.com":
 		return &baidu{}
 	case "h5.weishi.qq.com":

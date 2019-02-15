@@ -26,6 +26,7 @@
 | **火山小视频**        | <https://www.huoshan.com/>            |✓|
 | **好看视频**        | <https://haokan.baidu.com/>            |✓|
 | **百度视频**        | <http://m.v.baidu.com/>            |✓|
+| **想看新闻**        | <https://open.xk.miui.com/>            |✓|
 
 ## Release History
 
