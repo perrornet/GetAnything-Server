@@ -30,6 +30,8 @@ func newDownload(host string) download.Download {
 		return &zhihu{}
 	case "www.bilibili.com":
 		return &bilibili{}
+	case "m.panocn.net":
+		return &panocn{}
 	case "h5.weishi.qq.com":
 		return &weishi{}
 	case "v.huya.com":
