@@ -2,9 +2,11 @@ package download
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -119,4 +121,15 @@ func (h *Http) Head(url string, headers map[string]string) (*http.Response, erro
 
 func (h *Http) Post(url string, headers map[string]string, data map[string]string) (*http.Response, error) {
 	return h.do("POST", url, headers, data)
+}
+
+func GetJson(reader io.Reader, obj interface{}) (interface{}, error) {
+	c, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(c, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
 }
