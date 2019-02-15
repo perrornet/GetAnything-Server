@@ -32,6 +32,8 @@ func newDownload(host string) download.Download {
 		return &bilibili{}
 	case "h5.weishi.qq.com":
 		return &weishi{}
+	case "v.huya.com":
+		return &huya{}
 	default:
 		return nil
 	}
