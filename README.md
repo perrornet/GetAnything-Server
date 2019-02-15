@@ -24,6 +24,7 @@
 | **微视**        | <https://weishi.qq.com/>            |✓|
 | **虎牙**        | <http://v.huya.com/>            |✓|
 | **火山小视频**        | <https://www.huoshan.com/>            |✓|
+| **好看视频**        | <https://haokan.baidu.com/>            |✓|
 
 ## Release History
 
