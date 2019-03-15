@@ -43,7 +43,7 @@ go get github.com/PerrorOne/GetAnything-Server
 [GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): windows正式版本<br>
 ## Contributing
 
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
+1. Fork it (<https://github.com/PerrorOne/GetAnything-Server/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
