@@ -40,7 +40,7 @@ go get github.com/PerrorOne/GetAnything-Server
 
 ## Release History
 [GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): linux正式版本<br>
-[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): windows正式版本<br>
+[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1_windows): windows正式版本<br>
 ## Contributing
 
 1. Fork it (<https://github.com/PerrorOne/GetAnything-Server/fork>)
