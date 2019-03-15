@@ -5,7 +5,10 @@
 前端: https://github.com/PerrorOne/GetAnything-Client
 
 ## Installation
-开发完成后APP将会进入各个APP商店，同时会有一个简单的下载服务器支持，也支持自定义服务器。
+```
+go get github.com/PerrorOne/GetAnything-Server
+# do something
+```
 
 ## Supported
 | 名称 | 网址 | 视频 | 音频 |
@@ -36,11 +39,8 @@
 | **花椒直播**        | <http://www.huajiao.com/>            |✓| |
 
 ## Release History
-
-## Meta
-
-
-
+[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): linux正式版本<br>
+[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): windows正式版本<br>
 ## Contributing
 
 1. Fork it (<https://github.com/yourname/yourproject/fork>)
