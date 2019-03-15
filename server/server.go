@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/PerrorOne/GetAnything-Server/utils"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
@@ -10,9 +12,10 @@ import (
 	"time"
 )
 
-func StartServer(host, port string) {
+func StartServer(args *utils.CmdArgs) {
+	gin.SetMode(*args.Mode)
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", host, port),
+		Addr:    fmt.Sprintf("%s:%s", *args.Host, *args.Port),
 		Handler: routers(),
 	}
 	if err := Cache.LoadFile("./GetAnything.cache"); err != nil {
@@ -25,6 +28,7 @@ func StartServer(host, port string) {
 	}()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
+	log.Println("Welcome to GetAnything service. Your server address is:", fmt.Sprintf("%s:%s", *args.Host, *args.Port))
 	<-quit
 	if err := Cache.SaveFile("./GetAnything.cache"); err != nil {
 		log.Println(err)
