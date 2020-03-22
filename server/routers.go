@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/PerrorOne/GetAnything-Server/logger"
+	"GetAnything-Server/logger"
 	logger2 "github.com/apsdehal/go-logger"
 	"github.com/gin-gonic/gin"
 	"net/http"

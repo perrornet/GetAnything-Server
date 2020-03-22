@@ -1,8 +1,8 @@
 package extractors
 
 import (
-	"github.com/PerrorOne/GetAnything-Server/download"
-	error2 "github.com/PerrorOne/GetAnything-Server/error"
+	"GetAnything-Server/download"
+	error2 "GetAnything-Server/error"
 	url2 "net/url"
 )
 

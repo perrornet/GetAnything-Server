@@ -2,11 +2,11 @@
 > 在移动端获取任何APP、网站媒体资源
 
 前后端开发中 <br>
-前端: https://github.com/PerrorOne/GetAnything-Client
+前端: https://GetAnything-Client
 
 ## Installation
 ```
-go get github.com/PerrorOne/GetAnything-Server
+go get GetAnything-Server
 # do something
 ```
 
@@ -39,11 +39,11 @@ go get github.com/PerrorOne/GetAnything-Server
 | **花椒直播**        | <http://www.huajiao.com/>            |✓| |
 
 ## Release History
-[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1): linux正式版本<br>
-[GetAnything-Server-v0.1](https://github.com/PerrorOne/GetAnything-Server/releases/tag/0.1_windows): windows正式版本<br>
+[GetAnything-Server-v0.1](https://GetAnything-Server/releases/tag/0.1): linux正式版本<br>
+[GetAnything-Server-v0.1](https://GetAnything-Server/releases/tag/0.1_windows): windows正式版本<br>
 ## Contributing
 
-1. Fork it (<https://github.com/PerrorOne/GetAnything-Server/fork>)
+1. Fork it (<https://GetAnything-Server/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)

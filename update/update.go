@@ -1,10 +1,10 @@
 package update
 
 import (
+	"GetAnything-Server/logger"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PerrorOne/GetAnything-Server/logger"
 	logger2 "github.com/apsdehal/go-logger"
 	"io/ioutil"
 	"net/http"

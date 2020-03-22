@@ -1,9 +1,9 @@
 package extractors
 
 import (
+	"GetAnything-Server/download"
 	"encoding/base64"
 	"errors"
-	"github.com/PerrorOne/GetAnything-Server/download"
 	"github.com/antchfx/xpath"
 	"github.com/antchfx/xquery/html"
 	"io/ioutil"

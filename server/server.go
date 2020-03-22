@@ -1,9 +1,9 @@
 package server
 
 import (
+	"GetAnything-Server/utils"
 	"context"
 	"fmt"
-	"github.com/PerrorOne/GetAnything-Server/utils"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

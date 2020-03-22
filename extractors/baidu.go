@@ -1,9 +1,9 @@
 package extractors
 
 import (
+	"GetAnything-Server/download"
 	"bytes"
 	"errors"
-	"github.com/PerrorOne/GetAnything-Server/download"
 	"io/ioutil"
 	url2 "net/url"
 	"regexp"

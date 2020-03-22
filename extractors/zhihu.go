@@ -1,11 +1,11 @@
 package extractors
 
 import (
+	"GetAnything-Server/download"
+	"GetAnything-Server/logger"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PerrorOne/GetAnything-Server/download"
-	"github.com/PerrorOne/GetAnything-Server/logger"
 	logger2 "github.com/apsdehal/go-logger"
 	"io/ioutil"
 	url1 "net/url"

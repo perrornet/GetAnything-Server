@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/PerrorOne/GetAnything-Server/server"
-	"github.com/PerrorOne/GetAnything-Server/utils"
+	"GetAnything-Server/server"
+	"GetAnything-Server/utils"
 )
 
 func main() {
 	// 开发时需要注释
-	//u, err := update.NewUpdate("https://github.com/PerrorOne/GetAnything-Server")
+	//u, err := update.NewUpdate("https://GetAnything-Server")
 	//if err != nil{
 	//	log.Panic(err)
 	//}

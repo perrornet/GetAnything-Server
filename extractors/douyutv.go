@@ -1,11 +1,11 @@
 package extractors
 
 import (
+	"GetAnything-Server/download"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PerrorOne/GetAnything-Server/download"
 	"io/ioutil"
 	"net/url"
 	"regexp"
