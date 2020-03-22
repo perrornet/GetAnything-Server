@@ -64,6 +64,7 @@ func (z *zhihu) anser(url string, offset int) ([]download.Info, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	c, _ := ioutil.ReadAll(resp.Body)
 	var title string
 	t := zhihuTitle.FindAll(c, 1)
@@ -108,6 +109,47 @@ func (z *zhihu) anser(url string, offset int) ([]download.Info, error) {
 	return nil, errors.New("未能在该回答中寻找到视频。")
 }
 
+func (z *zhihu) zvideo() ([]download.Info, error) {
+	resp, err := z.client.Get(z.url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	c, _ := ioutil.ReadAll(resp.Body)
+	var title string
+	t := zhihuTitle.FindAll(c, 1)
+	if len(t) >= 1 {
+		title = strings.Replace(string(t[0]), `data-react-helmet="true">`, "", 1)
+		title = strings.Replace(title, `</title>`, "", 1)
+	}
+	id := regexp.MustCompile(`\{"videoId":"(.*?)",`)
+	vids := id.FindAllStringSubmatch(string(c), 1)
+	if len(vids) < 1 {
+		paths := strings.Split(z.url.Path, "/")
+		return []download.Info{{Title: title, Url: fmt.Sprintf("https://video.zhihu.com/video/%s", paths[len(paths)-1])}}, nil
+	}
+	resp1, err := z.client.Get(fmt.Sprintf("https://lens.zhihu.com/api/v4/videos/%s", vids[0][1]), nil)
+	if err != nil {
+		return nil, err
+	}
+	defer resp1.Body.Close()
+	var r zhihuResponse
+	if _, err := download.GetJson(resp1.Body, &r); err != nil {
+		return nil, err
+	}
+	data := make([]download.Info, 0)
+	if r.Playlist.Hd.PlayURL != "" {
+		data = append(data, download.Info{Title: title, Url: r.Playlist.Hd.PlayURL})
+	} else if r.Playlist.Ld.PlayURL != "" {
+		data = append(data, download.Info{Title: title, Url: r.Playlist.Ld.PlayURL})
+	} else if r.Playlist.Sd.PlayURL != "" {
+		data = append(data, download.Info{Title: title, Url: r.Playlist.Sd.PlayURL})
+	} else {
+		return nil, errors.New("视频不存在或者规则改变")
+	}
+	return data, nil
+}
+
 func (z *zhihu) Init(url string) error {
 	z.url, _ = url1.Parse(url)
 	z.client = download.NewHttp(zhihuFakeHeaders, true)
@@ -119,71 +161,15 @@ func (z *zhihu) GetDownloadHeaders() map[string]string {
 func (z *zhihu) GetFileInfo() ([]download.Info, error) {
 	switch z.url.Host {
 	case "www.zhihu.com":
-		if strings.Contains(z.url.Path, "answer") { // 单个回答
+		switch {
+		case strings.Contains(z.url.Path, "zvideo"):
+			return z.zvideo()
+		case strings.Contains(z.url.Path, "answer"):
 			return z.anser(z.url.String(), 0)
-		} else { // 整个问题, 目前禁止使用， 当一个问题下有多个回答可能会消耗过多的时间去请求，导致无谓的网络IO
-			return nil, errors.New("目前禁止使用， 当一个问题下有多个回答可能会消耗过多的时间去请求，导致无谓的网络IO")
 		}
+		return nil, errors.New("目前禁止使用， 当一个问题下有多个回答可能会消耗过多的时间去请求，导致无谓的网络IO")
 	case "zhuanlan.zhihu.com":
 		return z.anser(z.url.String(), 0)
 	}
 	return nil, nil
-	//		paths := strings.Split(z.url.Path, "/")
-	//		if len(paths) < 2{
-	//			return nil, errors.New("问题页面不支持该url")
-	//		}
-	//		var questionId string
-	//		if paths[len(paths) - 1] == "/"{
-	//			questionId = paths[len(paths) - 2]
-	//		}else{
-	//			questionId = paths[len(paths) - 1]
-	//		}
-	//		videosUrl := fmt.Sprintf("https://www.zhihu.com/api/v4/questions/%s/answers", questionId)
-	//		resp, err := z.client.Get(videosUrl, nil)
-	//		if err != nil{
-	//			return nil, err
-	//		}
-	//		c, _ := ioutil.ReadAll(resp.Body)
-	//		q := &zhihuQuestion{}
-	//		if err := json.Unmarshal(c, q); err != nil{
-	//			return nil, err
-	//		}
-	//		var count int
-	//		data := make([]download.Info, 0)
-	//		var runCount int
-	//		for {
-	//			for _, i := range q.Data{
-	//				ansewsUrl := fmt.Sprintf("https://www.zhihu.com/question/%s/answer/%d", questionId, i.ID)
-	//				d, err := z.anser(ansewsUrl, count)
-	//				if err != nil{
-	//					log.ErrorF("单个视频错误:%s", err.Error())
-	//					continue
-	//				}
-	//				log.InfoF("%v", d)
-	//				data = append(data, d...)
-	//				count++
-	//			}
-	//NEXT:
-	//			if q.Paging.IsEnd{
-	//				break
-	//			}
-	//			if runCount >= 5{ // 同一个URL尝试5次
-	//			log.Error("错误尝试次数过多，不再尝试在此问题页面寻找视频")
-	//				break
-	//			}
-	//			resp, err := z.client.Get(q.Paging.Next, nil)
-	//			if err != nil{
-	//				log.Error(err.Error())
-	//				runCount++
-	//				goto NEXT
-	//			}
-	//			c, _ := ioutil.ReadAll(resp.Body)
-	//			q = &zhihuQuestion{}
-	//			if err := json.Unmarshal(c, q); err != nil{
-	//				log.Error(err.Error())
-	//				runCount++
-	//				goto NEXT
-	//			}
-	//		}
-	//		return data, nil
 }

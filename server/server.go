@@ -13,9 +13,9 @@ import (
 )
 
 func StartServer(args *utils.CmdArgs) {
-	gin.SetMode(*args.Mode)
+	gin.SetMode(args.Mode)
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%s", *args.Host, *args.Port),
+		Addr:    fmt.Sprintf("%s:%s", args.Host, args.Port),
 		Handler: routers(),
 	}
 	if err := Cache.LoadFile("./GetAnything.cache"); err != nil {
@@ -28,7 +28,7 @@ func StartServer(args *utils.CmdArgs) {
 	}()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
-	log.Println("Welcome to GetAnything service. Your server address is:", fmt.Sprintf("%s:%s", *args.Host, *args.Port))
+	log.Println("Welcome to GetAnything service. Your server address is:", fmt.Sprintf("%s:%s", args.Host, args.Port))
 	<-quit
 	if err := Cache.SaveFile("./GetAnything.cache"); err != nil {
 		log.Println(err)
